@@ -1,0 +1,79 @@
+:root 
+{
+    --main-color: #222629;
+    --font-color: #ffffff;
+    --aspect-color-1: #86C232;
+    --aspect-color-2: #61892f;
+    --complementary-color-1: #6b6e70;
+    --complementary-color-2: #474b4f;
+}
+
+html, body, header, footer
+{
+    margin: 0;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+header
+{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 5rem;
+    color: var(--font-color);
+    font-size: 2rem;
+    font-weight: lighter;
+    padding: 0.5rem 1rem 0 1rem;
+}
+
+.header-logo-wrapper
+{
+    display: flex;
+    align-items: center;
+}
+
+.header-logo 
+{
+    width: 4rem;
+    height: 4rem;
+    background-image: url(../images/logo.svg);
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.header-text-wrapper
+{
+    display: flex;
+    flex-direction: column;
+}
+
+.header-text
+{
+    font-size: 1.25rem;
+    color: var(--aspect-color-1)
+}
+
+.sign-buttons > button
+{
+    transition: 0.5s;
+    background-color: var(--main-color);
+    color: var(--font-color);
+    border-color: var(--aspect-color-1);
+    border-style: dashed;
+    font-size: 1.25rem;
+    padding: 0.5rem 1.5rem;
+    border-end-start-radius: 10px;
+    border-start-end-radius: 10px;
+}
+
+.sign-buttons > button:hover
+{
+    transition: 1s;
+    color: var(--aspect-color-1);
+    border-color: var(--aspect-color-2);
+}
+
+body
+{
+    background-color: var(--main-color);
+}

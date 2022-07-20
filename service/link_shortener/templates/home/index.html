@@ -1,0 +1,28 @@
+{% load static %}
+{% load templates %}
+<!DOCTYPE html>
+<html>
+    <head>
+		{% autoescape off %}
+		{% meta %}
+		{% endautoescape %}
+    </head>
+    <body>
+        <header>
+            <div class="header-logo-wrapper">
+                <div class="header-logo"></div>
+                <div class="header-text-wrapper">
+                    <span>Hyper</span>
+                    <span class="header-text">Сервис сокращения ссылок</span>
+                </div>
+            </div>
+            <div class="sign-buttons">
+                <button onclick="location.href='../#'">Войти</button>
+                <button>Зарегистрироваться</button>
+            </div>
+        </header>
+        <footer>
+
+        </footer>
+    </body>
+</html>
