@@ -13,7 +13,7 @@ register = template.Library()
 # 	Тело функции
 
 
-@register.simple_tag(takes_context = True)
+@register.simple_tag(takes_context=True)
 def meta(context):
     static = settings.STATIC_URL
     page = str(context['request']).split('/')[1].lower()
@@ -26,3 +26,34 @@ def meta(context):
     <link rel="stylesheet" type="text/css" href="{static}main/styles/base.css">
     <link rel="stylesheet" type="text/css" href="{static}{page}/styles/{page}.css">
     '''
+
+@register.tag(name="signed")
+@register.simple_tag(takes_context = True)
+def header(context, signed):
+    header_content = f'''
+    <header>
+        <div class="header-logo-wrapper">
+            <div class="header-logo"></div>
+            <div class="header-text-wrapper">
+                <span>Hyper</span>
+                <span class="header-text">Сервис сокращения ссылок</span>
+            </div>
+        </div>'''
+    
+    if (signed == "True"):
+        header_content += '''
+        <div class="account-wrapper">
+            <div></div>
+            <button></button>
+        </div>
+        '''
+         
+    elif (signed == "False"):
+        header_content += '''
+        <div class="header-sign-wrapper">
+            <button>Войти</button>
+            <button>Зарегистрироваться</button>
+        </div>'''
+
+    header_content += f'''</header>'''
+    return header_content

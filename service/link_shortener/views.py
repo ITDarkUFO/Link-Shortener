@@ -1,6 +1,9 @@
+import datetime
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 import logging
+
+from .models import Link
 
 def auth(request):
     """Функция проверки входа в систему"""
@@ -34,8 +37,17 @@ def _login(request):
     elif auth(request):
         return redirect('/home/')
 
-    return render(request, './login/index.html')
+    return render(request, './home/index.html')
 
 
 def _home(request):
+    if request.method == 'POST':
+        if request.POST.get('link'):
+            link=Link()
+            link.original_link = request.POST.get('link')
+            link.short_link = "https://example.com/"
+            link.creation_date = datetime.datetime.now()
+            link.link_creator = request.user
+            link.save()
+
     return render(request, './home/index.html')

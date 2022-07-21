@@ -3,11 +3,22 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <!-- Meta -->
 		{% autoescape off %}
 		{% meta %}
 		{% endautoescape %}
     </head>
     <body>
+        <!-- Header -->
+        <!-- {% if user.is_authenticated %}
+        {% autoescape off %}
+        {% header signed="True"%}
+        {% endautoescape %}
+        {% else %}
+        {% autoescape off %}
+        {% header signed="False"%}
+        {% endautoescape %}
+        {% endif %} -->
         <header>
             <div class="header-logo-wrapper">
                 <div class="header-logo"></div>
@@ -16,13 +27,46 @@
                     <span class="header-text">Сервис сокращения ссылок</span>
                 </div>
             </div>
-            <div class="sign-buttons">
-                <button onclick="location.href='../#'">Войти</button>
-                <button>Зарегистрироваться</button>
+            <div class="header-account-wrapper">
+                <div></div>
+                <form class="header-sign-wrapper" action="/login/" method="post">
+                    {% csrf_token %}
+                    <button class="icon" id="exit" type="submit" name="action" value="exit">
+                        <span>{{ user.get_username }}</span>
+                    </button>
+                </form>
             </div>
         </header>
+        <!-- Main -->
+        <div class="content">
+            <form action="" method="post" class="shortener-form">
+                {% csrf_token %}
+                <legend>Сокращайте ссылки и отслеживайте количество переходов</legend>
+                <input name="link" type="text" placeholder="https://example.com/" required>
+                <button type="submit", value="Create">Сократить</button>
+            </form>
+            <table class="links-table">
+                <thead>
+                    <tr>
+                        <td>Короткая ссылка</td>
+                        <td>Дата создания</td>
+                        <td>Оригинальная ссылка</td>
+                        <td>Количество переходов</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><a href="https://h.ru/link?14b1hwrq4">https://h.ru/link?14b1hwrq4</a></td>
+                        <td>21.07.2022</td>
+                        <td><a href="https://vk.com/group/tempname">https://vk.com/group/tempname</a></td>
+                        <td>23</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <!-- Footer -->
         <footer>
-
+            <span>© 2022 Hyper</span>
         </footer>
     </body>
 </html>
