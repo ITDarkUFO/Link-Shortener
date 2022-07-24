@@ -10,5 +10,5 @@ urlpatterns = [
     path('register/', views.page_register, name='register'),
     path('home/', views.page_home, name='home'),
     re_path(r'go/*', views.page_go, name='go'),
-    re_path(r'^static/(?:.*)$', serve, {'document_root': settings.STATIC_DIR, })
+    # re_path(r'^static/(?:.*)$', serve, {'document_root': settings.STATIC_DIR, })
 ]
