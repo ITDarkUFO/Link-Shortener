@@ -1,0 +1,42 @@
+.register-form {
+    display: flex;
+    width: 25vw;
+    margin: 2rem;
+    margin-bottom: 1rem;
+    flex-direction: column;
+}
+
+.register-form>legend {
+    font-size: 1.5rem;
+    font-weight: lighter;
+    margin-bottom: 1rem;
+}
+
+.register-form input {
+    padding: 0.8rem 0.5rem;
+    background-color: var(--main-color);
+    color: var(--font-color);
+    border-color: var(--aspect-color-1);
+    margin-bottom: 0.5rem;
+}
+
+.register-form input::placeholder {
+    color: var(--complementary-color-1);
+}
+
+.register-form input:focus-visible {
+    border-color: var(--font-color);
+}
+
+.register-form button {
+    padding: 0.8rem 0.5rem;
+    background-color: var(--main-color);
+    color: var(--font-color);
+    border-color: var(--aspect-color-1);
+}
+
+.register-form button:hover,
+.register-form button:focus-visible {
+    color: var(--aspect-color-1);
+    border-color: var(--font-color);
+}

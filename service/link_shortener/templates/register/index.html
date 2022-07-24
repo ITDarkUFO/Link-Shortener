@@ -27,14 +27,14 @@
         </div>
     </header>
     <div class="content">
-        <form action="/login/" method="post" class="login-form">
+        <form action="/register/" method="post" class="register-form">
             {% csrf_token %}
-            <legend>Авторизоваться</legend>
+            <legend>Зарегистрироваться</legend>
             <input name="username" type="text" placeholder="Имя пользователя" required>
-            <input name="password" type="password" placeholder="Пароль" required>
-            <div class="labeled"><label for="remember-me">Запомнить меня</label><input id="remember-me"
-                    name="remember-me" type="checkbox"></div>
-            <button type="submit" name="action" value="sign-in">Войти</button>
+            <input name="email" type="email" placeholder="Почта" required>
+            <input name="password1" type="password" placeholder="Пароль" required>
+            <input name="password2" type="password" placeholder="Подтверждение пароля" required>
+            <button type="submit" name="action" value="sign-up">Зарегистрироваться</button>
         </form>
         {% if messages %}
         <div class="messages">

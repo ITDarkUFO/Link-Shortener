@@ -26,3 +26,27 @@ def meta(context):
     <link rel="stylesheet" type="text/css" href="{static}main/styles/base.css">
     <link rel="stylesheet" type="text/css" href="{static}{page}/styles/{page}.css">
     '''
+
+
+@register.simple_tag(takes_context=False)
+def header_logo():
+    site_url = Site.objects.get_current().domain
+    return f'''
+    <div class="logo-wrapper">
+            <a style="display: contents;" href="{site_url}">
+                <div id="logo"></div>
+                <div class="name-wrapper">
+                    <span id="name">Hyper</span>
+                    <span id="description">Сервис сокращения ссылок</span>
+                </div>
+            </a>
+        </div>
+    '''
+
+@register.simple_tag(takes_context=False)
+def footer():
+    return f'''
+    <footer>
+        <span>© 2022 Hyper</span>
+    </footer>
+    '''

@@ -13,27 +13,26 @@
 <body>
     <!-- Header -->
     <header>
-        <div class="logo-wrapper">
-            <a style="display: contents;" href="{{ request.scheme }}://{{ request.META.HTTP_HOST }}">
-                <div id="logo"></div>
-                <div class="name-wrapper">
-                    <span id="name">Hyper</span>
-                    <span id="description">Сервис сокращения ссылок</span>
-                </div>
-            </a>
-        </div>
+        {% autoescape off %}
+        {% header_logo %}
+        {% endautoescape %}
         <div class="account-wrapper">
+            {% if user.is_authenticated %}
             <form action="/login/" method="post" class="sign-wrapper" style="font-size: initial;">
                 {% csrf_token %}
-                {% if user.is_authenticated %}
-                <button class="button" id="usericon" name="action" value="exit"
-                    type="submit">{{user.get_username.0.capitalize}}</button>
-                {% else %}
-                <input name="username">
-                <input name="password">
-                <button class="button" id="sign" name="action" value="login" type="submit">Войти</button>
-                {% endif %}
+                <span>Добро пожаловать, {{user.get_username}}</span>
+                <button class="button" id="usericon" name="action" value="exit" type="submit">Выйти</button>
             </form>
+            {% else %}
+            <form action="/login/" method="post" class="sign-wrapper" style="font-size: initial;">
+                {% csrf_token %}
+                <button class="button" id="sign" type="submit">Войти</button>
+            </form>
+            <form action="/register/" method="post" class="sign-wrapper" style="font-size: initial;">
+                {% csrf_token %}
+                <button class="button" id="register" type="submit">Зарегистрироваться</button>
+            </form>
+            {% endif %}
         </div>
     </header>
     <!-- Main -->
@@ -42,7 +41,7 @@
             {% csrf_token %}
             <legend>Сокращайте ссылки и отслеживайте количество переходов</legend>
             <input name="link" type="text" placeholder="https://example.com/" required>
-            <button type="submit" , value="Create">Сократить</button>
+            <button type="submit" name="action" value="create-link">Сократить</button>
         </form>
         {% if links.exists %}
         <table class="links-table">
@@ -58,12 +57,13 @@
                 {% for link in links %}
                 <tr>
                     <td>
-                        <form action={{link.short_link}}><button class="link" type="submit">{{link.short_link}}</button>
+                        <form action={{link.short_link}} target="_blank"><button class="link"
+                                type="submit">{{link.short_link}}</button>
                         </form>
                     </td>
                     <td>{{ link.creation_date }}</td>
                     <td>
-                        <form action={{link.original_link}}><button class="link"
+                        <form action={{link.original_link}} target="_blank"><button class="link"
                                 type="submit">{{link.original_link}}</button></form>
                     </td>
                     <td>{{link.following_count}}</td>
@@ -74,9 +74,9 @@
         {% endif %}
     </div>
     <!-- Footer -->
-    <footer>
-        <span>© 2022 Hyper</span>
-    </footer>
+    {% autoescape off %}
+    {% footer %}
+    {% endautoescape %}
 </body>
 
 </html>

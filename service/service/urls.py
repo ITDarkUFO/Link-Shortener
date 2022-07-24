@@ -29,7 +29,7 @@ urlpatterns = [
 
 # Используйте static() чтобы добавить соотношения для статических файлов
 # Только на период разработки
-from django.conf import settings
-from django.conf.urls.static import static
+# from django.conf import settings
+# from django.conf.urls.static import static
 
-urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+# urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_DIR)

@@ -1,12 +1,14 @@
 import datetime
-from gettext import find
 import logging
 import random
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.sites.models import Site
+from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
+from django.contrib import messages
 
+from .forms import NewUserForm
 from .models import Link
 
 
@@ -22,50 +24,83 @@ def get_short_link(length: int = 8):
 
     return output_link
 
+
 def validate_link(link: str):
-    if (link.find("https://") == 0 or (link.find("http://") == 0 )):
+    if (link.find("https://") == 0 or (link.find("http://") == 0)):
         return True
     return False
 
+
 def auth(request):
     """Функция проверки входа в систему"""
-    if request != None:
-        # Проверка, что пользователь уже вошел в систему
-        if request.user.is_authenticated:
-            return True
+    # Проверка, что пользователь уже вошел в систему
+    if request.user.is_authenticated:
+        return True
 
-        # Проверка флажка "Запомнить меня"
-        if request.POST.get('action') == 'login':
-            # if request.POST.get('remember-me') == 'on':
-            request.session.set_expiry(2628000)
-            # else:
-            #     request.session.set_expiry(0)
+    # Проверка флажка "Запомнить меня"
+    if request.POST.get('remember-me') == 'on':
+        request.session.set_expiry(2628000)
+    else:
+        request.session.set_expiry(0)
 
-            # Проверка данных входа
-            username = request.POST.get('username')
-            password = request.POST.get('password')
-            user = authenticate(request, username=username, password=password)
-            if user is not None:
-                login(request, user)
-                return True
+    # Проверка данных входа
+    username = request.POST.get('username')
+    password = request.POST.get('password')
+    user = authenticate(request, username=username, password=password)
+
+    if user is not None:
+        login(request, user)
+        return True
+
     return False
 
 
+def register(request):
+    form = NewUserForm(request.POST)
+    if form.is_valid():
+        user = form.save()
+        login(request, user)
+        messages.success(request, "Вы были зарегистрированы.")
+        return redirect('/home/')
+    messages.error(request, "Произошла ошибка, введена неверная информация.")
+    return render(request, './register/index.html')
+
 # Страницы сайта
+
+
 def page_login(request):
     """Функция отображения для страницы входа"""
-    # Проверка, что пришла форма на выход из системы
+    # Проверка, что пришла форма на вход или выход из системы
     if request.POST.get('action') == 'exit':
         logout(request)
-    elif auth(request):
         return redirect('/home/')
+    elif request.POST.get('action') == 'sign-in':
+        if (auth(request)):
+            return redirect('/home/')
+        else:
+            messages.error(request, "Неправильный логин или пароль!")
+            return render(request, './login/index.html')
 
-    return redirect('/home/')
+    # Иначе отрисовываем страницу
+    if (request.user.is_authenticated):
+        return redirect('/home/')
+    else:
+        return render(request, './login/index.html')
+
+
+def page_register(request):
+    # Проверка, что пришла форма регистрации
+    if request.POST.get('action') == 'sign-up':
+        register(request)
+    if (request.user.is_authenticated):
+        return redirect('/home/')
+    else:
+        return render(request, './register/index.html')
 
 
 def page_home(request):
     if request.method == 'POST':
-        if request.POST.get('link'):
+        if request.POST.get('action') == 'create-link':
             link = Link()
 
             if (validate_link(request.POST.get('link'))):
@@ -88,6 +123,7 @@ def page_home(request):
                 link.session_id = request.session.session_key
 
             link.save()
+            return HttpResponseRedirect("/home/")
 
     if request.user.is_authenticated:
         links = Link.objects.filter(link_creator=request.user)
