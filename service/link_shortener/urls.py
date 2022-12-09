@@ -1,11 +1,10 @@
-from django.conf import settings
 from django.urls import path, re_path
-from django.views.static import serve
+from django.views.generic import RedirectView
+
 from . import views
 
 urlpatterns = [
-    # При отключении редиректа позволит получать в корневом каталоге
-	path('', views.page_home, name='home'),
+    path('', RedirectView.as_view(url='/home'), name='index'),
     path('login/', views.page_login, name='login'),
     path('register/', views.page_register, name='register'),
     path('home/', views.page_home, name='home'),
